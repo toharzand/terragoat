@@ -31,3 +31,4 @@ root_block_device_encrypted = true
 metadata_http_tokens_required = true
 
 associate_public_ip_address = true
+---
