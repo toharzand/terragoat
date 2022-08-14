@@ -1,10 +1,10 @@
 resource "aws_s3_bucket" "data" {
+  
   # bucket is public
   # bucket is not encrypted
   # bucket does not have access logs
   # bucket does not have versioning
   bucket        = "${local.resource_prefix.value}-data"
-  acl           = "public-read"
   force_destroy = true
   tags = {
     Name                 = "${local.resource_prefix.value}-data"
@@ -25,6 +25,7 @@ resource "aws_s3_bucket" "data" {
 
 resource "aws_s3_bucket_object" "data_object" {
   bucket = aws_s3_bucket.data.id
+  
   key    = "customer-master.xlsx"
   source = "resources/customer-master.xlsx"
   tags = {
@@ -137,5 +138,15 @@ resource "aws_s3_bucket" "logs" {
     git_org              = "try-bridgecrew"
     git_repo             = "terragoat"
     yor_trace            = "ce72f84f-4cb6-4f67-b540-54d7e998df19"
+  }
+}
+resource "aws_s3_bucket" "logs2" {
+
+  server_side_encryption_configuration {
+    rule {
+      apply_server_side_encryption_by_default {
+        sse_algorithm = "AES256"
+      }
+    }
   }
 }
