@@ -1,4 +1,12 @@
 resource "aws_s3_bucket" "data" {
+  server_side_encryption_configuration {
+    rule {
+      apply_server_side_encryption_by_default {
+        sse_algorithm = "AES256"
+      }
+    }
+  }
+  
   # bucket is public
   # bucket is not encrypted
   # bucket does not have access logs
@@ -25,6 +33,7 @@ resource "aws_s3_bucket" "data" {
 
 resource "aws_s3_bucket_object" "data_object" {
   bucket = aws_s3_bucket.data.id
+  
   key    = "customer-master.xlsx"
   source = "resources/customer-master.xlsx"
   tags = {
